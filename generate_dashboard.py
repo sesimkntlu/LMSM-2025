@@ -84,7 +84,7 @@ def process_data(raw_data, column_mapping):
         timestamp = row[column_mapping["TIMESTAMP"]].strip() if column_mapping.get("TIMESTAMP") is not None and len(row) > column_mapping["TIMESTAMP"] else 'N/A'
         
         munisipiu_index = column_mapping.get("MUNISIPIU")
-        munisipiu = row[munisipipiu_index].strip() if munisipiu_index is not None and len(row) > munisipiu_index else 'N/A'
+        munisipiu = row[munisipiu_index].strip() if munisipiu_index is not None and len(row) > munisipiu_index else 'N/A'
         
         nivel_eskola_index = column_mapping.get("NIVEL_ESKOLA")
         nivel_eskola = row[nivel_eskola_index].strip() if nivel_eskola_index is not None and len(row) > nivel_eskola_index else 'N/A'
@@ -739,8 +739,8 @@ if __name__ == "__main__":
         data = fetch_google_sheet_data(SPREADSHEET_ID, SHEET_NAME, API_KEY)
         dashboard_results = process_data(data, COLUMN_MAPPING)
 
-        html_output = generate_html_dashboard(dashboard_results, BACKGROUND_IMAGE_FILENAME)
-        output_file = "dashboard.html"
+        # IMPORTANT CHANGE: output_file is now 'index.html'
+        output_file = "index.html" 
         with open(output_file, "w", encoding="utf-8") as f:
             f.write(html_output)
         print(f"Dashboard generated successfully: {os.path.abspath(output_file)}")
