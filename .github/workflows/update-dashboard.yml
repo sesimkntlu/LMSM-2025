@@ -1,0 +1,44 @@
+name: Auto-Update Dashboard
+
+on:
+  schedule:
+    # Runs daily at 00:00 UTC (midnight UTC)
+    # You can adjust this to a different time: e.g., '0 12 * * *' for 12:00 PM UTC daily.
+    # Use https://crontab.guru/ to help set your desired schedule.
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    # This allows you to manually trigger the workflow from the GitHub Actions tab.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Use a virtual machine running Ubuntu for the job.
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # This action downloads your repository's code.
+
+      - name: Set up Python
+        uses: actions/setup-python@v5 # This action sets up the Python environment.
+        with:
+          python-version: '3.x' # Specifies to use the latest Python 3 version.
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt # Installs necessary Python libraries (like requests, pandas) from your requirements.txt file.
+
+      - name: Run dashboard generation script
+        run: python generate_dashboard.py # Executes your Python script to update dashboard.html.
+
+      - name: Check for changes
+        id: git_status # Assigns an ID to this step to reference its output later.
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add dashboard.html # Stages the generated dashboard.html file.
+          # Checks if there are actual differences in staged files and sets an output variable.
+          git diff --staged --quiet || echo "::set-output name=has_changes::true" 
+
+      - name: Commit and push if changes exist
+        if: steps.git_status.outputs.has_changes == 'true' # This step only runs if 'has_changes' is true.
+        run: |
+          git commit -m "Auto-update dashboard.html from latest data" # Creates a new commit.
+          git push # Pushes the commit to your GitHub repository.
