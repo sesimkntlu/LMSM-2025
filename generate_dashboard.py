@@ -358,7 +358,7 @@ def generate_html_dashboard(dashboard_data, background_image_url=None):
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1 md:col-span-2 lg:col-span-2">
-                <h2 class="text-2xl font-bold text-indigo-700 mb-3">Distribuisaun Tópiku tuir Munisípiu</h2>
+                <h2 class="text-2xl font-bold text-indigo-700 mb-3">Distribuisaun Partisipante tuir Munisípiu</h2>
                 <div class="chart-container">
                     <canvas id="municipalityChart"></canvas>
                 </div>
