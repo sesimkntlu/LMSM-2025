@@ -675,11 +675,11 @@ def generate_html_dashboard(dashboard_data, background_image_url=None):
                 document.getElementById('totalMunicipality').textContent = dashboardData.totalMunicipality;
                 document.getElementById('totalGender').textContent = dashboardData.totalGender;
                 document.getElementById('totalDiscipline').textContent = dashboardData.totalDiscipline;
-                document.getElementById('totalTopiku').textContent = dashboardData.totalTopiku; 
+                document.getElementById('totalTopiku').textContent = dashboardData.totalTopiku;
                 
                 renderCharts();
-                renderSchoolMunicipalityTable(); 
-                renderFilterOptions(); 
+                renderSchoolMunicipalityTable();
+                renderFilterOptions();
             }});
         </script>
     </body>
@@ -692,7 +692,7 @@ if __name__ == "__main__":
     # Google Sheet details
     SPREADSHEET_ID = '1MYTD8Z_F408OPRSJos8JWS_0tgvM9Dmo6wlVKfZjrmM'
     # Your API key from the provided information
-    API_KEY = "AIzaSyAirZPcce-sRKU1DRdshlzjz07PkRPgwEQ" 
+    API_KEY = "AIzaSyAirZPcce-sRKU1DRdshlzjz07PkRPgwEQ"
     SHEET_NAME = 'dadus'
 
     # --- Background Image Configuration ---
@@ -701,46 +701,48 @@ if __name__ == "__main__":
     # "AY1A8072.jpg"
     # "AY1A8051.jpg"
     # Make sure the image file is in the same directory as your dashboard.html
-    BACKGROUND_IMAGE_FILENAME = "AY1A8030.jpg" 
+    BACKGROUND_IMAGE_FILENAME = "AY1A8030.jpg"
     # Set to None if you don't want a background image
-    # BACKGROUND_IMAGE_FILENAME = None 
+    # BACKGROUND_IMAGE_FILENAME = None
 
     # Column mapping (adjust these indices based on your actual sheet)
     # These indices are 0-based. For example, column A is 0, B is 1, C is 2, etc.
     # YOU MUST VERIFY THESE INDICES WITH YOUR ACTUAL GOOGLE SHEET COLUMNS.
     COLUMN_MAPPING = {
-        "TIMESTAMP": 0,       
-        "EMAIL_ADDRESS": 1,    
-        "MUNISIPIU": 2,        
-        "NIVEL_ESKOLA": 3,     
-        "NARAN_ESKOLA": 4,     
-        "DIXIPLINA": 5,        
-        "TITULU_TOPIKU_ATIVIDADE": 6, 
+        "TIMESTAMP": 0,
+        "EMAIL_ADDRESS": 1,
+        "MUNISIPIU": 2,
+        "NIVEL_ESKOLA": 3,
+        "NARAN_ESKOLA": 4,
+        "DIXIPLINA": 5,
+        "TITULU_TOPIKU_ATIVIDADE": 6,
 
         # Naran Kompleitu (Student Name)
-        "NARAN_KANORIN_1": 7,  
-        "NARAN_KANORIN_2": 14, 
-        "NARAN_KANORIN_3": 21, 
+        "NARAN_KANORIN_1": 7,
+        "NARAN_KANORIN_2": 14,
+        "NARAN_KANORIN_3": 21,
 
         # Seksu (Gender)
-        "SEKSU_1": 8,  
-        "SEKSU_2": 15, 
-        "SEKSU_3": 22, 
+        "SEKSU_1": 8,
+        "SEKSU_2": 15,
+        "SEKSU_3": 22,
 
         # Idade (Age)
-        "IDADE_1": 9,  
-        "IDADE_2": 16, 
-        "IDADE_3": 23, 
+        "IDADE_1": 9,
+        "IDADE_2": 16,
+        "IDADE_3": 23,
 
-        "DOKUMENTUS": 28,      
+        "DOKUMENTUS": 28,
     }
 
     try:
         data = fetch_google_sheet_data(SPREADSHEET_ID, SHEET_NAME, API_KEY)
         dashboard_results = process_data(data, COLUMN_MAPPING)
 
-        # IMPORTANT CHANGE: output_file is now 'index.html'
-        output_file = "index.html" 
+        # CORRECTED LINE: Call generate_html_dashboard and store its result
+        html_output = generate_html_dashboard(dashboard_results, BACKGROUND_IMAGE_FILENAME) # Corrected line
+
+        output_file = "index.html"
         with open(output_file, "w", encoding="utf-8") as f:
             f.write(html_output)
         print(f"Dashboard generated successfully: {os.path.abspath(output_file)}")
