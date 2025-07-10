@@ -45,7 +45,7 @@ def process_data(raw_data, column_mapping):
     """
     gender_counts = {}
     age_distribution = {}
-    
+
     unique_municipalities_set = set() 
     unique_disciplines_set = set()
     unique_topiku_set = set() # New: Set to store unique topiku titles
@@ -82,22 +82,22 @@ def process_data(raw_data, column_mapping):
         # Safely get values using .get() for index, and check length of row
         # Stripping whitespace from all string values
         timestamp = row[column_mapping["TIMESTAMP"]].strip() if column_mapping.get("TIMESTAMP") is not None and len(row) > column_mapping["TIMESTAMP"] else 'N/A'
-        
+
         munisipiu_index = column_mapping.get("MUNISIPIU")
         munisipiu = row[munisipiu_index].strip() if munisipiu_index is not None and len(row) > munisipiu_index else 'N/A'
-        
+
         nivel_eskola_index = column_mapping.get("NIVEL_ESKOLA")
         nivel_eskola = row[nivel_eskola_index].strip() if nivel_eskola_index is not None and len(row) > nivel_eskola_index else 'N/A'
-        
+
         naran_eskola_index = column_mapping.get("NARAN_ESKOLA")
         naran_eskola = row[naran_eskola_index].strip() if naran_eskola_index is not None and len(row) > naran_eskola_index else 'N/A'
-        
+
         dixiplina_index = column_mapping.get("DIXIPLINA")
         dixiplina = row[dixiplina_index].strip() if dixiplina_index is not None and len(row) > dixiplina_index else 'N/A'
 
         topiku_atividade_index = column_mapping.get("TITULU_TOPIKU_ATIVIDADE") # New: Get topiku index
         topiku_atividade = row[topiku_atividade_index].strip() if topiku_atividade_index is not None and len(row) > topiku_atividade_index else 'N/A' # New: Get topiku value
-        
+
         dokumentus_index = column_mapping.get("DOKUMENTUS")
         dokumentus = row[dokumentus_index].strip() if dokumentus_index is not None and len(row) > dokumentus_index else 'N/A'
 
@@ -114,7 +114,7 @@ def process_data(raw_data, column_mapping):
 
         if nivel_eskola and nivel_eskola != 'N/A':
             school_level_counts[nivel_eskola] = school_level_counts.get(nivel_eskola, 0) + 1
-        
+
         # Increment count for Munisipiu and Naran Eskola combination
         if munisipiu != 'N/A' and naran_eskola != 'N/A':
             school_municipality_counts[munisipiu][naran_eskola] += 1
@@ -137,7 +137,7 @@ def process_data(raw_data, column_mapping):
                 # Update gender counts
                 if seksu and seksu != 'N/A':
                     gender_counts[seksu] = gender_counts.get(seksu, 0) + 1
-                
+
                 # Update age distribution
                 if idade and idade != 'N/A':
                     try:
@@ -156,6 +156,7 @@ def process_data(raw_data, column_mapping):
                     "Seksu": seksu if seksu else 'N/A', # Use 'N/A' if empty
                     "Idade": idade if idade else 'N/A', # Use 'N/A' if empty
                     "Dixiplina": dixiplina,
+                    "Titulu/Tópiku": topiku_atividade, # Add Titulu/Topiku here
                     "Dokumentus": dokumentus,
                 })
 
@@ -255,23 +256,20 @@ def generate_html_dashboard(dashboard_data, background_image_url=None):
         background_css = f"""
             body {{
                 background-image: url('{background_image_url}');
-                background-size: cover; /* Cover the entire area */
-                background-repeat: no-repeat; /* Do not repeat the image */
-                background-position: center center; /* Center the image */
-                background-attachment: fixed; /* Keep background fixed while scrolling */
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-attachment: fixed;
             }}
-            /* Make sure content is readable over the image */
             .bg-white, .bg-blue-50 {{
-                background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white for readability */
+                background-color: rgba(255, 255, 255, 0.9);
             }}
-            /* Header and Footer might need adjustments if the background image makes text hard to read */
             header, footer {{
                 position: relative;
                 z-index: 10;
             }}
-            /* Ensure text in cards is visible */
             .text-indigo-800, .text-indigo-700, .text-blue-600, .text-gray-800 {{
-                text-shadow: 0px 0px 2px rgba(255,255,255,0.7); /* Subtle shadow for text over potentially busy backgrounds */
+                text-shadow: 0px 0px 2px rgba(255,255,255,0.7);
             }}
         """
 
@@ -544,7 +542,7 @@ def generate_html_dashboard(dashboard_data, background_image_url=None):
                     dashboardData.schoolLevelChartData.labels,
                     dashboardData.schoolLevelChartData.data
                 );
-                
+
                 // Discipline Chart (still Bar)
                 createBarChart(
                     'disciplineChart',
@@ -608,7 +606,7 @@ def generate_html_dashboard(dashboard_data, background_image_url=None):
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Seksu</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Idade</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Dixiplina</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Dokumentus</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Titulu/Tópiku</th> <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Dokumentus</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-100">
@@ -626,14 +624,14 @@ def generate_html_dashboard(dashboard_data, background_image_url=None):
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{row.Seksu}}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{row.Idade}}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{row.Dixiplina}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{row.Dokumentus}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{row['Titulu/Tópiku']}}</td> <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{row.Dokumentus}}</td>
                             </tr>
                         `;
                     }});
                 }} else {{
                     tableHtml += `
                         <tr>
-                            <td colspan="9" class="px-6 py-4 text-center text-gray-500">
+                            <td colspan="10" class="px-6 py-4 text-center text-gray-500">
                                 La-iha dadus ne'ebé disponivel aliña ho filtrasaun atuál.
                             </td>
                         </tr>
@@ -676,7 +674,7 @@ def generate_html_dashboard(dashboard_data, background_image_url=None):
                 document.getElementById('totalGender').textContent = dashboardData.totalGender;
                 document.getElementById('totalDiscipline').textContent = dashboardData.totalDiscipline;
                 document.getElementById('totalTopiku').textContent = dashboardData.totalTopiku;
-                
+
                 renderCharts();
                 renderSchoolMunicipalityTable();
                 renderFilterOptions();
@@ -740,7 +738,7 @@ if __name__ == "__main__":
         dashboard_results = process_data(data, COLUMN_MAPPING)
 
         # CORRECTED LINE: Call generate_html_dashboard and store its result
-        html_output = generate_html_dashboard(dashboard_results, BACKGROUND_IMAGE_FILENAME) # Corrected line
+        html_output = generate_html_dashboard(dashboard_results, BACKGROUND_IMAGE_FILENAME)
 
         output_file = "index.html"
         with open(output_file, "w", encoding="utf-8") as f:
