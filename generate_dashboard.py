@@ -606,7 +606,8 @@ def generate_html_dashboard(dashboard_data, background_image_url=None):
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Seksu</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Idade</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Dixiplina</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Titulu/Tópiku</th> <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Dokumentus</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Titulu/Tópiku</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Dokumentus</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-100">
@@ -624,7 +625,8 @@ def generate_html_dashboard(dashboard_data, background_image_url=None):
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{row.Seksu}}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{row.Idade}}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{row.Dixiplina}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{row['Titulu/Tópiku']}}</td> <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{row.Dokumentus}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{row['Titulu/Tópiku']}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{row.Dokumentus}}</td>
                             </tr>
                         `;
                     }});
